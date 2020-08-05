@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <TaskList></TaskList>
+    <task-list-container></task-list-container>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import TaskList from "@/components/TaskList/TaskList.vue";
+import TaskListContainer from "@/components/TaskList/TaskListContainer.vue";
 
 export default defineComponent({
   name: 'App',
   components: {
-    TaskList
+    TaskListContainer
   }
 });
 </script>

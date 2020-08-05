@@ -1,18 +1,18 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <TaskList />
+    <task-list-container />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import TaskList from '@/components/TaskList/TaskList.vue'; // @ is an alias to /src
+import TaskListContainer from '@/components/TaskList/TaskListContainer.vue'; // @ is an alias to /src
 
 export default defineComponent({
   name: 'Home',
   components: {
-    TaskList,
+    TaskListContainer,
   },
 });
 </script>
