@@ -17,7 +17,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-#app {
+body {
+    margin: 0;
+    // background-color: #333333;
+}
 
+#app {
+    // background-color: #333333;
 }
 </style>

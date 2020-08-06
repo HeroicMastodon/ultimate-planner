@@ -6,7 +6,7 @@
         <AFSelect></AFSelect>
 	</div>
 	<div class="task-list-container">
-		<TaskList></TaskList>
+		<TaskList ></TaskList>
 	</div>
 	<CompletedTasks></CompletedTasks>
 </template>

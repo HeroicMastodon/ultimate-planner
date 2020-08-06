@@ -4,69 +4,29 @@
 			<i>options icon</i>
 		</div>
 		<ul>
-			<li>
-				Scripture Study
-				<button>Edit</button>
-				<i>scheduled icon</i> Today
-				<i>recurring icon</i>
-			</li>
-			<li>
-				Johnson brothers timberline wood
-				<button>Edit</button>
-			</li>
-			<li>
-				Shopping
-				<button>Edit</button>
-				<ul>
-					<li>
-						Pillow
-						<button>Edit</button>
-					</li>
-					<li>
-						Clean car
-						<button>Edit</button>
-					</li>
-					<li>
-						Whitening Strip
-						<button>Edit</button>
-					</li>
-					<li>
-						Wood glue
-						<button>Edit</button>
-					</li>
-				</ul>
-			</li>
-			<li>steel wool</li>
-			<li>
-				Oil
-				<button>Edit</button>
-			</li>
-			<li>
-				3mhisjobs.com
-				<button>Edit</button>
-			</li>
-			<li>
-				Game
-				<button>Edit</button>
-			</li>
-			<li>
-				a practical guide to evil
-				<button>Edit</button>
-			</li>
+			<li v-for="(task, index) in tasks" :key="index">
+                <TaskComponent :task="task" />
+            </li>
 		</ul>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
+import TaskComponent from './TaskComponent.vue';
+import {TestTasks} from '@/models/Task';
 
 export default defineComponent({
     name: 'taskList',
-    props: {
-
+    components: {
+        TaskComponent
+    },
+    props: {    
     },
     setup() {
-        // here we will setup
-        return {}
+        const tasks = ref(TestTasks); // here we will setup
+        return {
+            tasks
+        }
     }
 })
 </script>
