@@ -17,6 +17,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+* {
+    box-sizing: border-box;
+}
 body {
     margin: 0;
     // background-color: #333333;
@@ -24,5 +27,13 @@ body {
 
 #app {
     // background-color: #333333;
+}
+
+.vert-sec {
+    border-bottom: 1px gray solid;
+}
+
+.indent {
+    padding-left: 2em;
 }
 </style>

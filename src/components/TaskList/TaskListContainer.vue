@@ -1,11 +1,14 @@
 <template>
-	<div class="list-title-container">
+    <div class="title">
+        Tasks
+    </div>
+	<div class="list-title-container vert-sec">
 		<!--    //TODO: make custom select -->
 		<h3 class="list-title">School</h3>
 		<i>dropdown icon</i>
         <AFSelect></AFSelect>
 	</div>
-	<div class="task-list-container">
+	<div class="task-list-container vert-sec">
 		<TaskList ></TaskList>
 	</div>
 	<CompletedTasks></CompletedTasks>
@@ -36,17 +39,7 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-ul {
-	//list-style-type: none;
-	//padding: 0;
-}
-
-li {
-	//display: inline-block;
-	//margin: 0 10px;
-}
-
-a {
-	color: #42b983;
+.title {
+    
 }
 </style>
