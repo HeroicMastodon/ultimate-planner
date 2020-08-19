@@ -1,14 +1,16 @@
 <template>
 	<div class="task-container">
-		<div class="check-circle">
+		<div @click="completeTask()" :class="`check-circle ${task.Completed ? 'complete' : ''}`">
 			<div class="check-left"></div>
 			<div class="check-right"></div>
 		</div>
 		<div class="task">
-			<div class="task-name-container">
-				<div class="task-name" v-text="task.Name" contenteditable></div>
-				<button class="edit-btn">Edit</button>
+			<div :class="`task-name-container`">
+				<div :class="`task-name  ${task.Completed ? 'complete' : ''}`" v-text="task.Name" contenteditable></div>
+				<button @click="activateTask()" v-if="!task.Completed" class="edit-btn">Edit</button>
+                <button v-else class="delete-btn">Delete</button>
 			</div>
+            <div v-if="task.Details">{{task.Details}}</div>
 			<div v-if="task.DueDate">{{task.DueDate}}</div>
 		</div>
 	</div>
@@ -22,6 +24,9 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import Task from "@/models/Task";
+import UseTest from '@/store/test';
+
+// TODO: Implement completion
 
 export default defineComponent({
 	name: "TaskComponent",
@@ -30,10 +35,21 @@ export default defineComponent({
 			type: Object as PropType<Task>,
 			required: true,
 		},
-	},
+    },
 	setup() {
-		return {};
-	},
+        const {setActiveTask} = UseTest();
+        function completeTask() {
+            console.log('complete');
+        }
+
+		return {completeTask, setActiveTask};
+    },
+    
+    methods: {
+        activateTask() {
+            if (this.task.Id) this.setActiveTask(this.task.Id);
+        }
+    }
 });
 </script>
 
@@ -45,6 +61,7 @@ export default defineComponent({
     &:hover {
         // border: solid 1px gray;
         box-shadow: 0 1px 2px gray;
+        cursor: pointer;
     }
 
 	--boxval: 1em;
@@ -70,7 +87,7 @@ export default defineComponent({
             transform: rotate(-45deg);
         }
 
-        &:hover {
+        &:hover, &.complete {
             border:none;
             cursor: pointer;
             .check-left, .check-right {
@@ -92,6 +109,11 @@ export default defineComponent({
             display: flex;
             justify-content: space-between;
             width: 100%;
+
+            .task-name.complete {
+                text-decoration: line-through;
+   
+            }
         }
 	}
 }
