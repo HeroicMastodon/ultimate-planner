@@ -2,7 +2,7 @@
     <div class="task-form" v-if="activeTask">
         <div class="task-form-header">
             <button @click="handleClose()">Close</button>
-            <button>Delete</button>
+            <button @click="handleDelete()">Delete</button>
         </div>
         <input v-model="activeTask.Name" type="text" name="name" placeholder="Task Name">
         <textarea v-model="activeTask.Details" placeholder="Add Details"></textarea>
@@ -41,7 +41,7 @@ export default defineComponent({
         // }
     },
     setup() {
-        const { activeTask, deactivateTask, saveTask, addSubTask } = useTasks();
+        const { activeTask, deactivateTask, saveTask, addSubTask, deleteTask } = useTasks();
         const isAddingSubtask = ref(false);
         const newTaskName = ref('');
 
@@ -51,7 +51,8 @@ export default defineComponent({
             saveTask,
             isAddingSubtask,
             newTaskName,
-            addSubTask
+            addSubTask,
+            deleteTask
         }
     },  
     methods: {
@@ -60,6 +61,10 @@ export default defineComponent({
                 console.log('closing...', this.activeTask.Id)
                 await this.saveTask(this.activeTask.Id); 
             }
+            this.deactivateTask();
+        },
+        async handleDelete() {
+            if (this.activeTask) await this.deleteTask(this.activeTask);
             this.deactivateTask();
         }
     },

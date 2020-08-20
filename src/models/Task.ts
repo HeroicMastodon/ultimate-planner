@@ -6,6 +6,8 @@ export default class Task {
     public LastCompletionDate = '';
     public ListName = '';
 
+    public IsDeleted = false;
+
 	constructor(
 		public Name: string,
 		public Completed = false,

@@ -1,5 +1,5 @@
 <template>
-	<div class="task-container">
+	<div v-if="! task.IsDeleted" class="task-container">
 		<div @click="setTaskCompletion(task, !task.Completed)" :class="`check-circle ${task.Completed ? 'complete' : ''}`">
 			<div class="check-left"></div>
 			<div class="check-right"></div>
@@ -8,13 +8,13 @@
 			<div :class="`task-name-container`">
 				<div :class="`task-name  ${task.Completed ? 'complete' : ''}`" v-text="task.Name" contenteditable></div>
 				<button @click="activateTask()" v-if="!task.Completed" class="edit-btn">Edit</button>
-                <button v-else class="delete-btn">Delete</button>
+                <button @click="deleteTask(task)" v-else class="delete-btn">Delete</button>
 			</div>
             <div v-if="task.Details">{{task.Details}}</div>
 			<div v-if="task.DueDate">{{task.DueDate}}</div>
 		</div>
 	</div>
-	<template v-if="task.HasChildren">
+	<template v-if="! task.IsDeleted && task.HasChildren">
 		<div class="indent" v-for="(child, index) in task.Children" :key="index">
 			<TaskComponent :task="child"></TaskComponent>
 		</div>
@@ -35,10 +35,10 @@ export default defineComponent({
 		},
     },
 	setup() {
-        const {setActiveTask, SHOULD_SHOW_TASK_EDIT, deactivateTask, setTaskCompletion} = useTasks();
+        const {setActiveTask, SHOULD_SHOW_TASK_EDIT, deactivateTask, setTaskCompletion, deleteTask} = useTasks();
         
 
-		return { setActiveTask, SHOULD_SHOW_TASK_EDIT, deactivateTask, setTaskCompletion };
+		return { setActiveTask, SHOULD_SHOW_TASK_EDIT, deactivateTask, setTaskCompletion, deleteTask };
     },
     
     methods: {

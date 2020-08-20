@@ -30,6 +30,10 @@ export default function useTasks() {
         })
         console.log(`Edit task: ${task}`, task);
     }
+
+    const deleteTask = async (task: Task) => {
+        task.IsDeleted = true;
+    }
     
     const setActiveTask = (task: Task) => {
         activeTask = ref(task);
@@ -60,6 +64,7 @@ export default function useTasks() {
         setActiveTask,
         deactivateTask,
         saveTask,
-        addSubTask
+        addSubTask,
+        deleteTask
 	};
 }
