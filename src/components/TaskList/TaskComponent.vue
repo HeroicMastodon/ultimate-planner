@@ -1,6 +1,6 @@
 <template>
 	<div class="task-container">
-		<div @click="completeTask()" :class="`check-circle ${task.Completed ? 'complete' : ''}`">
+		<div @click="setTaskCompletion(task, !task.Completed)" :class="`check-circle ${task.Completed ? 'complete' : ''}`">
 			<div class="check-left"></div>
 			<div class="check-right"></div>
 		</div>
@@ -24,9 +24,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import Task from "@/models/Task";
-import UseTest from '@/store/test';
-
-// TODO: Implement completion
+import useTasks from '@/store/Tasks';
 
 export default defineComponent({
 	name: "TaskComponent",
@@ -37,17 +35,19 @@ export default defineComponent({
 		},
     },
 	setup() {
-        const {setActiveTask} = UseTest();
-        function completeTask() {
-            console.log('complete');
-        }
+        const {setActiveTask, SHOULD_SHOW_TASK_EDIT, deactivateTask, setTaskCompletion} = useTasks();
+        
 
-		return {completeTask, setActiveTask};
+		return { setActiveTask, SHOULD_SHOW_TASK_EDIT, deactivateTask, setTaskCompletion };
     },
     
     methods: {
         activateTask() {
-            if (this.task.Id) this.setActiveTask(this.task.Id);
+            if (this.SHOULD_SHOW_TASK_EDIT) this.deactivateTask();
+
+            this.$nextTick(() => {
+                this.setActiveTask(this.task);
+            })
         }
     }
 });

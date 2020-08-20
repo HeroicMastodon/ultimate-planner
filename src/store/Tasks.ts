@@ -3,9 +3,9 @@ import { ref } from 'vue';
 
 const TASKLIST = ref<Array<Task>>([]);
 const SHOULD_SHOW_TASK_EDIT = ref(false);
-const activeTask = ref<Task>();
+let activeTask = ref<Task>();
 let ids = 1;
-export default function UseTest() {
+export default function useTasks() {
 	const addTask = async (name: string) => {
 		const task = await new Task(name);
 		task.Id = ids.toString();
@@ -13,22 +13,15 @@ export default function UseTest() {
 		TASKLIST.value.push(task);
 	};
 
-	const completeTask = async (id: string, parentId?: string) => {
+	const setTaskCompletion = async (task: Task, complete = true) => {
 		const response = '';
-
-		TASKLIST.value.forEach(item => {
-            if (item.Id == id) {
-                item.Completed = true;
-            }
-
-			if (item.Id == parentId) {
-				item.Children.forEach(child => {
-					if (child.Id == id) {
-						child.Completed = true;
-					}
-				});
-			}
-		});
+        task.Completed = complete;
+        
+        if (task.HasChildren) {
+            task.Children.forEach((item) => {
+                setTaskCompletion(item, complete);
+            })
+        }
     };
 
     const saveTask = async (id: string) => {
@@ -38,10 +31,8 @@ export default function UseTest() {
         console.log(`Edit task: ${task}`, task);
     }
     
-    const setActiveTask = (id: string) => {
-        TASKLIST.value.forEach(task => {
-            if (task.Id == id) activeTask.value = task;
-        });
+    const setActiveTask = (task: Task) => {
+        activeTask = ref(task);
         SHOULD_SHOW_TASK_EDIT.value = true;
         console.log(activeTask.value)
     }
@@ -51,14 +42,24 @@ export default function UseTest() {
         activeTask.value = undefined;
     }
 
+    const addSubTask = (parentTask: Task, name: string) => {
+        const task = new Task(name);
+        task.Id = ids.toString();
+        ids++;
+        // TASKLIST.value.push(task)
+        parentTask.Children.push(task);
+    }
+
+
 	return {
 		TASKLIST,
         addTask,
-        completeTask,
+        setTaskCompletion,
         activeTask,
         SHOULD_SHOW_TASK_EDIT,
         setActiveTask,
         deactivateTask,
-        saveTask
+        saveTask,
+        addSubTask
 	};
 }

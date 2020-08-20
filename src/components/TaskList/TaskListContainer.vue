@@ -22,8 +22,8 @@ import { defineComponent, ref } from "vue";
 import TaskList from "@/components/TaskList/TaskList.vue";
 import CompletedTasks from "@/components/TaskList/CompletedTasks.vue";
 import AFSelect from "@/components/Shared/AFSelect.vue";
-import UseTest from "@/store/test";
 import TaskForm from "./TaskForm.vue";
+import useTasks from '@/store/Tasks';
 
 export default defineComponent({
 	name: "TaskListContainer",
@@ -37,7 +37,7 @@ export default defineComponent({
 		items: [] as Array<any>,
 	},
 	setup() {
-		const { SHOULD_SHOW_TASK_EDIT, activeTask } = UseTest();
+		const { SHOULD_SHOW_TASK_EDIT, activeTask } = useTasks();
 		return { 
             shouldShowTaskEdit: SHOULD_SHOW_TASK_EDIT,
             activeTask

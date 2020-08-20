@@ -18,7 +18,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import TaskComponent from "./TaskComponent.vue";
-import UseTest from "@/store/test";
+import useTasks from '@/store/Tasks';
 
 export default defineComponent({
 	name: "taskList",
@@ -27,7 +27,7 @@ export default defineComponent({
 	},
     props: {},
 	setup() {
-        const { TASKLIST, addTask } = UseTest();
+        const { TASKLIST, addTask } = useTasks();
         const newTaskName = ref<string>();
         const showNewTask = ref(false);
         const error = ref<string>();

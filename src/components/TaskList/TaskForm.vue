@@ -11,6 +11,11 @@
         <!-- // TODO: Replace with custom date picker -->
         <input v-model="activeTask.DueDate" type="date">
         <!-- // TODO: Insert Repeat component -->
+        <template v-if="activeTask.HasChildren">
+            <TaskComponent :task="task" v-for="task in activeTask.Children" :key="task.Id"></TaskComponent>
+        </template>
+        <input @keyup.enter="addSubTask(activeTask, newTaskName)" v-if="isAddingSubtask" v-model="newTaskName"/>
+        <button @click="() => isAddingSubtask = true">Add Subtask</button>
     </div>
     <div v-else>
         Error Loading Task
@@ -18,14 +23,16 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
+import {defineComponent, ref} from 'vue'
 // import AFSelect from '@/components/Shared/AFSelect.vue';
 // import Task from '@/models/Task';
-import UseTest from '@/store/test';
+import TaskComponent from './TaskComponent.vue';
+import useTasks from '@/store/Tasks';
 
 export default defineComponent({
     name: 'TaskForm',
     components: {
+        TaskComponent
     },
     props: {    
         // task: {
@@ -34,11 +41,17 @@ export default defineComponent({
         // }
     },
     setup() {
-        const { activeTask, deactivateTask, saveTask } = UseTest();
+        const { activeTask, deactivateTask, saveTask, addSubTask } = useTasks();
+        const isAddingSubtask = ref(false);
+        const newTaskName = ref('');
+
         return {
             activeTask,
             deactivateTask,
-            saveTask
+            saveTask,
+            isAddingSubtask,
+            newTaskName,
+            addSubTask
         }
     },  
     methods: {
