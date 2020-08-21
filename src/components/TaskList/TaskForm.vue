@@ -10,6 +10,7 @@
         <select v-model="activeTask.ListName"></select>
         <!-- // TODO: Replace with custom date picker -->
         <input v-model="activeTask.DueDate" type="date">
+        <AFDatePicker></AFDatePicker>
         <!-- // TODO: Insert Repeat component -->
         <template v-if="activeTask.HasChildren">
             <TaskComponent :task="task" v-for="task in activeTask.Children" :key="task.Id"></TaskComponent>
@@ -27,12 +28,15 @@ import {defineComponent, ref} from 'vue'
 // import AFSelect from '@/components/Shared/AFSelect.vue';
 // import Task from '@/models/Task';
 import TaskComponent from './TaskComponent.vue';
+import AFDatePicker from '../Shared/AFDatePicker.vue';
+
 import useTasks from '@/store/Tasks';
 
 export default defineComponent({
     name: 'TaskForm',
     components: {
-        TaskComponent
+        TaskComponent,
+        AFDatePicker
     },
     props: {    
         // task: {

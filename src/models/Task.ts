@@ -8,6 +8,8 @@ export default class Task {
 
     public IsDeleted = false;
 
+    public CompletionDate?: string;
+
 	constructor(
 		public Name: string,
 		public Completed = false,

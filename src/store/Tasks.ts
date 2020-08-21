@@ -1,7 +1,7 @@
 import Task from '@/models/Task';
 import { ref } from 'vue';
 
-const TASKLIST = ref<Array<Task>>([]);
+const TASKLIST = ref<Array<Task>>([new Task('test')]);
 const SHOULD_SHOW_TASK_EDIT = ref(false);
 let activeTask = ref<Task>();
 let ids = 1;
