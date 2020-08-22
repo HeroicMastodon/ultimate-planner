@@ -1,17 +1,24 @@
 <template>
 	<div v-if="! task.IsDeleted" class="task-container">
-		<div @click="setTaskCompletion(task, !task.Completed)" :class="`check-circle ${task.Completed ? 'complete' : ''}`">
+		<div
+			@click="setTaskCompletion(task, !task.Completed)"
+			:class="`check-circle ${task.Completed ? 'complete' : ''}`"
+		>
 			<div class="check-left"></div>
 			<div class="check-right"></div>
 		</div>
 		<div class="task">
 			<div :class="`task-name-container`">
-				<div :class="`task-name  ${task.Completed ? 'complete' : ''}`" v-text="task.Name" contenteditable></div>
+				<div
+					:class="`task-name  ${task.Completed ? 'complete' : ''}`"
+					v-text="task.Name"
+					contenteditable
+				></div>
 				<button @click="activateTask()" v-if="!task.Completed" class="edit-btn">Edit</button>
-                <button @click="deleteTask(task)" v-else class="delete-btn">Delete</button>
+				<button @click="deleteTask(task)" v-else class="delete-btn">Delete</button>
 			</div>
-            <div v-if="task.Details">{{task.Details}}</div>
-			<div v-if="task.DueDate">{{task.DueDate}}</div>
+			<div v-if="task.Details">{{task.Details}}</div>
+			<div v-if="task.DueDate">{{generateFormattedDate(task.DueDate)}}</div>
 		</div>
 	</div>
 	<template v-if="! task.IsDeleted && task.HasChildren">
@@ -24,7 +31,8 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import Task from "@/models/Task";
-import useTasks from '@/store/Tasks';
+import useTasks from "@/store/Tasks";
+import useAFDate from "@/store/AFDate";
 
 export default defineComponent({
 	name: "TaskComponent",
@@ -33,23 +41,36 @@ export default defineComponent({
 			type: Object as PropType<Task>,
 			required: true,
 		},
-    },
+	},
 	setup() {
-        const {setActiveTask, SHOULD_SHOW_TASK_EDIT, deactivateTask, setTaskCompletion, deleteTask} = useTasks();
-        
+		const {
+			setActiveTask,
+			SHOULD_SHOW_TASK_EDIT,
+			deactivateTask,
+			setTaskCompletion,
+			deleteTask,
+		} = useTasks();
+		const { generateFormattedDate } = useAFDate();
 
-		return { setActiveTask, SHOULD_SHOW_TASK_EDIT, deactivateTask, setTaskCompletion, deleteTask };
-    },
-    
-    methods: {
-        activateTask() {
-            if (this.SHOULD_SHOW_TASK_EDIT) this.deactivateTask();
+		return {
+			setActiveTask,
+			SHOULD_SHOW_TASK_EDIT,
+			deactivateTask,
+			setTaskCompletion,
+            deleteTask,
+            generateFormattedDate
+		};
+	},
 
-            this.$nextTick(() => {
-                this.setActiveTask(this.task);
-            })
-        }
-    }
+	methods: {
+		activateTask() {
+			if (this.SHOULD_SHOW_TASK_EDIT) this.deactivateTask();
+
+			this.$nextTick(() => {
+				this.setActiveTask(this.task);
+			});
+		},
+	},
 });
 </script>
 
@@ -58,11 +79,11 @@ export default defineComponent({
 	display: flex;
 	align-items: center;
 	width: 100%;
-    &:hover {
-        // border: solid 1px gray;
-        box-shadow: 0 1px 2px gray;
-        cursor: pointer;
-    }
+	&:hover {
+		// border: solid 1px gray;
+		box-shadow: 0 1px 2px gray;
+		cursor: pointer;
+	}
 
 	--boxval: 1em;
 
@@ -73,48 +94,50 @@ export default defineComponent({
 		border: solid gray 2px;
 		margin: 0.5em;
 
-        .check-left, .check-right {
-            width: .75em;
-            height: .1em;
-            background-color: blue;
-            transform: rotate(45deg) translate(0em, .55em);
-            display: none;
+		.check-left,
+		.check-right {
+			width: 0.75em;
+			height: 0.1em;
+			background-color: blue;
+			transform: rotate(45deg) translate(0em, 0.55em);
+			display: none;
+		}
 
-        }
+		.check-right {
+			width: 1.5em;
+			transform: rotate(-45deg);
+		}
 
-        .check-right {
-            width: 1.5em;
-            transform: rotate(-45deg);
-        }
+		&:hover,
+		&.complete {
+			border: none;
+			cursor: pointer;
+			.check-left,
+			.check-right {
+				display: inherit;
 
-        &:hover, &.complete {
-            border:none;
-            cursor: pointer;
-            .check-left, .check-right {
-                display: inherit;
-
-                .check-left, .check-right {
-                    display: inherit;
-                }
-            }
-        }
+				.check-left,
+				.check-right {
+					display: inherit;
+				}
+			}
+		}
 	}
 
 	.task {
 		padding: 0.5em 0.5em 0.5em 0;
 		width: calc(100% - var(--boxval));
-        border-bottom: 1px gray solid;
+		border-bottom: 1px gray solid;
 
-        .task-name-container {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
+		.task-name-container {
+			display: flex;
+			justify-content: space-between;
+			width: 100%;
 
-            .task-name.complete {
-                text-decoration: line-through;
-   
-            }
-        }
+			.task-name.complete {
+				text-decoration: line-through;
+			}
+		}
 	}
 }
 </style>

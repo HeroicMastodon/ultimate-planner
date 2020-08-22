@@ -9,8 +9,8 @@
         <!-- // TODO: Replace with AFSelect -->
         <select v-model="activeTask.ListName"></select>
         <!-- // TODO: Replace with custom date picker -->
-        <input v-model="activeTask.DueDate" type="date">
-        <AFDatePicker></AFDatePicker>
+        <!-- <input v-model="activeTask.DueDate" type="date"> -->
+        <AFDatePicker v-model:dateTime="activeTask.DueDate"></AFDatePicker>
         <!-- // TODO: Insert Repeat component -->
         <template v-if="activeTask.HasChildren">
             <TaskComponent :task="task" v-for="task in activeTask.Children" :key="task.Id"></TaskComponent>

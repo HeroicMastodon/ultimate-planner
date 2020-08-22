@@ -4,7 +4,7 @@
         <slot />
         <slot name="footer" />
     </div>
-    <div class="overlay"></div>
+    <div @click.stop="$emit('close')" class="overlay"></div>
 </template>
 
 <script lang="ts">
@@ -12,6 +12,9 @@ import {defineComponent, ref} from 'vue'
 
 export default defineComponent({
     name: 'AFModal',
+    emits: [
+        'close'
+    ],
     props: {
         
     },

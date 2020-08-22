@@ -15,7 +15,7 @@ export default class Task {
 		public Completed = false,
 		public parentId?: string,
 		public Children: Array<Task> = [],
-		public DueDate?: string
+		public DueDate: string = ''
 	) {}
 
 	get HasChildren(): boolean {
